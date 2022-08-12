@@ -9,9 +9,10 @@ class Keyboards():
     keyboard_command = ReplyKeyboardMarkup(resize_keyboard=True)
     
     def __init__(self):
+        """Construct"""
         # create buttons to keyboards
         btn_contact = KeyboardButton(text='Отправить свой контакт ☎️', request_contact=True)
-        btn_command = KeyboardButton(text='Доступные команды')
+        btn_command = KeyboardButton(text='Доступные команды 🖥️')
         
         # add buttons to keyboards
         self.keyboard_contact.add(btn_contact)

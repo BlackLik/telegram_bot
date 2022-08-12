@@ -4,7 +4,8 @@ from server import Base, engine, name_database
 from sqlalchemy.orm import Session
 import os.path
 
-def create_database():
+def create_database() -> None:
+    """Create a new database"""
     if os.path.exists(name_database) == False: 
         Base.metadata.create_all(engine)
         print('Database created successfully')
@@ -14,6 +15,7 @@ def create_database():
 session = Session(engine)
 
 class User(Base):
+    """User column class"""
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
     id_telegram = Column(Integer, nullable=False)
