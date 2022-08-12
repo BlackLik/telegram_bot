@@ -1,10 +1,9 @@
 import config
 import logging
 from aiogram import Bot, Dispatcher, executor, types
-from client.keyboard import Keyboards
-from server.database import session, User, create_database
+from client.keyboard import Keyboards, KeyboardCallbacks
+from server.database import create_database
 from server import function
-from sqlalchemy import select
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -13,11 +12,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=config.BOT_API)
 dp = Dispatcher(bot)
 kb = Keyboards()
-
-help_message = "\n".join([
-    '/start - Начало программы',
-    '/help - Показывает все доступные собщения'
-])
+kb_callback = KeyboardCallbacks()
 
    
 # create dispatcher message handlers starting
@@ -50,11 +45,12 @@ async def contacts(message: types.Message) -> None:
 @dp.message_handler(commands=['help'])
 async def start(message: types.Message) -> None:
     """Starting the dispatcher"""
-    await message.answer(help_message, reply_markup=kb.get_command())
+    await message.answer(config.help_message, reply_markup=kb.get_command())
 
 @dp.message_handler()
 async def cmd_dialog(message: types.Message):
-    await message.answer("/help - чтобы увидеть доступные команды")
+    await kb_callback.check_word_callback(message=message, kb=kb)
+    #await message.answer(message.text)#"/help - чтобы увидеть доступные команды")
 
 def main() -> None:
     """Start"""
